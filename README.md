@@ -23,3 +23,4 @@ MIT. See [`LICENSE`](./LICENSE).
 
 - Trust page: https://codespar.dev/trust
 - Docs: https://docs.codespar.dev
+- Ecosystem index: [Awesome Agentic Commerce LATAM](https://github.com/codespar/awesome-agentic-commerce-latam)
