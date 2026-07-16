@@ -61,6 +61,27 @@ A new `authentication.methods[]` type plus an object the agent presents on order
 
 Why: the spec assumes the agent is already trusted. A signed mandate is the agent-side authority (who authorized it, limits, scope, expiry), aligned with the AP2 signed mandates the spec says it is complementary to.
 
+The mandate is also the settlement authorization, not only a delegation credential. Presented on `pay` for a Pix order, it authorizes the BRL debit in the same request, the fiat analog of the crypto signature the spec already accepts under x402 / eip-712. So PixPaymentMethod and Mandate compose: one authorization, settlement in band, bounded by the mandate's allowlist, per-transaction cap, and expiry. Fiat gets the same "authorize once, settle in the request" property the crypto rails have, with no card-network round trip.
+
+## 4. controlRecord
+
+The spec has order, pay, returns, and (above) delivery, but nothing binds them into one verifiable artifact. A Control Record hash-chains the four links, mandate to order to payment to delivery, into a single tamper-evident receipt the buyer, merchant, or a dispute resolver can verify offline without calling either party.
+
+```json
+"controlRecord": {
+  "id": "rcpt_...",
+  "links": { "mandate": "mnd_...", "order": "ord_...", "payment": "E2026...<endToEndId>", "delivery": "3526...<nfe key>" },
+  "chain": "<hash>",
+  "sig": "<merchant/issuer signature>"
+}
+```
+
+Why: the deterministic-totals and returns flows imply an evidence layer but do not close it. The Control Record is that layer. `deliveryRecord` (section 2) is one link in it; the Pix `endToEndId` and the mandate id are the others. Returns and chargebacks resolve against the record, not a support thread.
+
+## Reference implementation
+
+These additions are not speculative. They run today in CodeSpar's stack: an agent holding a Pix mandate pays a fixed-price resource, the BRL debit settles synchronously on the BCB rail with an `endToEndId`, and a hash-chained receipt seals mandate to payment; the NF-e attaches as the delivery link. We offer this as a working reference for the spec and can walk it through on a town hall.
+
 ## Backward compatibility
 
 Every field above is optional. A v0.1 merchant omits them; a v0.1 agent ignores them. No breaking change to the envelope.
