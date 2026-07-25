@@ -14,7 +14,7 @@ This proposal adds a **push / mandate-delegated** payment handler class, with **
 
 - **The spec is card-first; the fastest-growing agentic markets are not.** In Brazil, Pix is the dominant rail and already supports pre-authorized recurring consent (Pix Automático), a native fit for autonomous agents. Bank transfer and stablecoin rails share the same shape (push under a pre-authorization), so a push handler class generalizes beyond Pix.
 - **Autonomous agents need pre-authorization, not a card to pull.** A card credential is a bearer secret. A mandate is a scoped, capped, revocable authorization, which is what an agent operating without a human in the loop actually needs. This closes ACP's gap on non-card rails and aligns with the mandate-centric direction of AP2.
-- **Concrete, testable, already live.** CodeSpar runs Pix-under-signed-mandate in production in Brazil (agent wallets, capped mandates, cryptographic receipts). We volunteer a reference PSP endpoint and a conformance test vector.
+- **Concrete and testable.** CodeSpar runs Pix-under-signed-mandate end to end today (agent wallets, capped mandates, cryptographic receipts), with Pix settlement on sandbox rails pending production provisioning; the same mandate pattern already settles USDC over x402 on Base mainnet in production. We volunteer a reference PSP endpoint and a conformance test vector.
 
 ## Current behavior (context)
 
