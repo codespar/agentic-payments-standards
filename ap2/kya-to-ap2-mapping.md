@@ -17,7 +17,7 @@
 
 ## Where CodeSpar adds to AP2
 
-- **Non-card rails in production.** AP2 is method-agnostic by design; CodeSpar contributes a live Pix (and USDC/x402) implementation of the "push under a mandate" pattern, plus the same mandate primitive proposed for ACP (see [`../acp/pix-push-rail-sep.md`](../acp/pix-push-rail-sep.md)).
+- **Non-card rails, running today.** AP2 is method-agnostic by design; CodeSpar contributes a working Pix implementation of the "push under a mandate" pattern (sandbox settlement pending production provisioning) and a USDC/x402 implementation settling on Base mainnet, plus the same mandate primitive proposed for ACP (see [`../acp/pix-push-rail-sep.md`](../acp/pix-push-rail-sep.md)).
 - **A dependency-free offline verifier.** The mandate is checkable with a few lines of `node:crypto`, no SDK. That is a useful reference for anyone implementing AP2's "verify the mandate" step.
 
 ## Open items
