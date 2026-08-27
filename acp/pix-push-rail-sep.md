@@ -53,7 +53,7 @@ PixPaymentMethod:
           enum: [cpf, cnpj, email, phone, evp]
     mandate_proof:
       type: object
-      description: Optional. Offline-verifiable signed mandate proving the agent is authorized.
+      description: Optional. Dual-signed mandate token proving the agent is authorized, checkable against the signer's published Ed25519 public keys.
       properties:
         format: { type: string }        # e.g. an Ed25519 dual-signed mandate token
         token:  { type: string }        # base64url signed token

@@ -1,12 +1,21 @@
-// verify.mjs — verify a CodeSpar V3 agent mandate offline, with no SDK and no API key.
+// verify.mjs: verify a CodeSpar V3 agent mandate with no SDK and no API key.
 //
 // Usage: node verify.mjs <token-file>
 //   where <token-file> contains the base64url `signed_token` a mandate carries.
 //
 // What it proves: the mandate was signed by BOTH the agent and the issuer
-// (dual Ed25519), for a given cap, purpose and expiry, bound to an accountable
-// principal. The only network call is an unauthenticated GET of the public
-// did:web documents to fetch the two public keys.
+// (dual Ed25519) over a canonical string carrying the cap, the purposes, the
+// expiry and the bound accountable principal.
+//
+// What it does NOT prove: that the mandate is still in force. The verdict below
+// is `agentOk && issuerOk`, signatures only. An expired mandate with intact
+// signatures still prints VERIFIED, with a negative `expires in:` value.
+// Callers must compare expires_at against their own clock.
+//
+// Not offline: key resolution is an unauthenticated GET to api.codespar.dev
+// (see `pubkey` below), for BOTH the agent key and the issuer key, so this
+// needs that host reachable. The keys are also published as did:web documents,
+// which this script does not resolve.
 //
 // See ../kya/mandate-format-v3.md for the exact canonical string this reproduces.
 
@@ -15,8 +24,8 @@ import { readFileSync } from "node:fs";
 
 const tok = JSON.parse(Buffer.from(readFileSync(process.argv[2], "utf8").trim(), "base64url"));
 
-// The DID is inside the token: agent_kid = "<agent-did>#<n>". The verifier needs
-// only the token: no org, no env, no API key, no authenticated call.
+// The DID is inside the token: agent_kid = "<agent-did>#<n>". Resolving it takes
+// no org, no env, no API key and no authenticated call.
 const agentDid = tok.agent_kid.split("#")[0];
 const issuerDid = "did:web:id.codespar.dev"; // platform issuer (well-known)
 
