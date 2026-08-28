@@ -6,7 +6,7 @@ CodeSpar builds payments infrastructure for AI agents, LATAM-first. This reposit
 
 ## Contents
 
-- **[`kya/`](./kya)** — *Know Your Agent*. A signed-mandate and receipt format plus a dependency-free offline verifier. Anyone can check an agent's authorization with a few lines of `node:crypto`: no SDK, no API key. This is the "how does the other side trust the agent" primitive.
+- **[`kya/`](./kya)** — *Know Your Agent*. A signed-mandate and receipt format plus a dependency-free reference verifier. Anyone can check an agent's authorization with a few lines of `node:crypto`: no SDK, no API key. Checking signatures does require the signer's public keys, which the verifier fetches over the network; [`kya/README.md`](./kya) states that dependency and the verifier's current limits. This is the "how does the other side trust the agent" primitive.
 - **[`acp/`](./acp)** — a proposal to extend the [Agentic Commerce Protocol](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) (OpenAI + Stripe) with a **push-rail / mandate-delegated** payment handler, with **Pix** as the reference implementation. Today ACP is card-first; agents on push rails need pre-authorization, not a card to pull.
 - **[`oac/`](./oac)** — a proposal to the Basis Theory **Open Agentic Commerce (OAC)** spec / **Agentic Commerce Consortium**, adding a Pix payment method, a delivery-record (NF-e) primitive, and an agent mandate. Additive and optional.
 - **[`ap2/`](./ap2)** — a mapping between CodeSpar mandates and Google's [Agent Payments Protocol (AP2)](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol).

@@ -60,3 +60,5 @@ Encoding rules:
 ## Reference verifier
 
 [`verify.mjs`](./verify.mjs) reproduces the string above and checks both Ed25519 signatures against the resolved public keys. It is dependency-free (`node:crypto`, `node:fs`).
+
+Two caveats about that script as written. It does not follow the `did:web` resolution described above: it fetches both keys from `https://api.codespar.dev/v1/agents/<did>/did.json`, so it needs that host. And its `VERIFIED` line covers the two signatures only, not `expires_at`. Both are described in [`README.md`](./README.md).
