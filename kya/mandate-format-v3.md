@@ -61,4 +61,6 @@ Encoding rules:
 
 [`verify.mjs`](./verify.mjs) reproduces the string above and checks both Ed25519 signatures against the resolved public keys. It is dependency-free (`node:crypto`, `node:fs`).
 
-Two caveats about that script as written. It does not follow the `did:web` resolution described above: it fetches both keys from `https://api.codespar.dev/v1/agents/<did>/did.json`, so it needs that host. And its `VERIFIED` line covers the two signatures only, not `expires_at`. Both are described in [`README.md`](./README.md).
+It follows the `did:web` resolution described above, deriving the URL from the DID itself, and `--did-doc` pins the documents so verification runs with no network at all. `VERIFIED` covers both signatures and `expires_at`: an expired mandate is `INVALID` with a non-zero exit however good its signatures are. The one thing it cannot do is learn the issuer from the token, because the canonical string above carries no `issuer_did`; see [`README.md`](./README.md).
+
+[`test/verify.test.mjs`](./test/verify.test.mjs) holds that to frozen fixtures built from this spec by [`test/make-fixtures.mjs`](./test/make-fixtures.mjs), so a verifier that drifts from the string above stops accepting them.

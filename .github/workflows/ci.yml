@@ -1,0 +1,54 @@
+# This repo publishes a mandate verifier as a contribution to agentic payment
+# standards. Until this file existed it had no checks at all: the last two
+# commits to kya/verify.mjs, one of which changed how it fails on an expired
+# mandate, merged with nothing run against them.
+#
+# The gates count the files they walked and fail if that count is zero, so a
+# rename cannot turn a gate into a green no-op.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # `node --check` parses a file. It catches a typo that makes the verifier
+      # unparseable; it does not resolve imports and does not run anything.
+      - name: Parse every .mjs
+        shell: bash
+        run: |
+          count=$(git ls-files '*.mjs' | wc -l | tr -d ' ')
+          if [ "$count" -eq 0 ]; then
+            echo "::error::found no .mjs files, so this gate would pass vacuously"
+            exit 1
+          fi
+          echo "parsing $count .mjs files"
+          git ls-files -z '*.mjs' | xargs -0 -n1 node --check
+
+      # The behavioural gate. verify.mjs is run as a reader would run it, against
+      # frozen mandate fixtures built from kya/mandate-format-v3.md. It must say
+      # VERIFIED for a genuinely signed, in-date mandate and fail closed for
+      # every mandate that is not. Pinned DID documents only: no network.
+      - name: Verifier conformance tests
+        shell: bash
+        run: |
+          # `git ls-files` nao expande `**` como o shell: 'kya/test/**/*.test.mjs'
+          # casa ZERO em kya/test/x.test.mjs. Medido neste repo.
+          count=$(git ls-files '*.test.mjs' | wc -l | tr -d ' ')
+          if [ "$count" -eq 0 ]; then
+            echo "::error::found no verifier test files, so this gate would pass vacuously"
+            exit 1
+          fi
+          echo "running $count test file(s)"
+          node --test 'kya/test/**/*.test.mjs'
