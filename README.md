@@ -10,6 +10,7 @@ CodeSpar builds payments infrastructure for AI agents, LATAM-first. This reposit
 - **[`acp/`](./acp)** — a proposal to extend the [Agentic Commerce Protocol](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) (OpenAI + Stripe) with a **push-rail / mandate-delegated** payment handler, with **Pix** as the reference implementation. Today ACP is card-first; agents on push rails need pre-authorization, not a card to pull.
 - **[`oac/`](./oac)** — a proposal to the Basis Theory **Open Agentic Commerce (OAC)** spec / **Agentic Commerce Consortium**, adding a Pix payment method, a delivery-record (NF-e) primitive, and an agent mandate. Additive and optional.
 - **[`ap2/`](./ap2)** — a mapping between CodeSpar mandates and Google's [Agent Payments Protocol (AP2)](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol).
+- **[`ucp/`](./ucp)** — a mapping between CodeSpar mandates and the AP2 authorization that the [Universal Commerce Protocol (UCP)](https://ucp.dev/) checkout carries, with a sketch of a Pix payment handler for UCP.
 
 ## Why this is public
 
