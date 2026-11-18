@@ -1,6 +1,6 @@
 # Mapping CodeSpar mandates to AP2
 
-**Status:** v0 mapping, to be validated against the current AP2 spec. Corrections welcome.
+**Status:** v0 mapping, to be validated against the current AP2 spec (v0.2 at the time of the [UCP mapping](../ucp/mandate-to-ucp-ap2-mapping.md), which covers the parts of AP2 that UCP checkout carries). Corrections welcome.
 
 [AP2 (Agent Payments Protocol)](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol), led by Google with a broad set of participants, models agent payments as **mandates expressed as verifiable credentials**, and is deliberately payment-method agnostic (cards, bank transfers, and crypto/stablecoins). CodeSpar's mandate model is a close conceptual sibling: a scoped, signed authorization an agent carries and presents. This document maps the two so the pieces interoperate rather than compete.
 
